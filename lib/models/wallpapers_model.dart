@@ -1,10 +1,4 @@
 class WallpaperModel {
-  int page;
-  int perPage;
-  List<Photo> photos;
-  int totalResults;
-  String nextPage;
-
   WallpaperModel({
     required this.page,
     required this.perPage,
@@ -12,23 +6,33 @@ class WallpaperModel {
     required this.totalResults,
     required this.nextPage,
   });
+  late final int page;
+  late final int perPage;
+  late final List<Photos> photos;
+  late final int totalResults;
+  late final String nextPage;
 
+  WallpaperModel.fromJson(Map<String, dynamic> json){
+    page = json['page'];
+    perPage = json['per_page'];
+    photos = List.from(json['photos']).map((e)=>Photos.fromJson(e)).toList();
+    totalResults = json['total_results'];
+    nextPage = json['next_page'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['page'] = page;
+    _data['per_page'] = perPage;
+    _data['photos'] = photos.map((e)=>e.toJson()).toList();
+    _data['total_results'] = totalResults;
+    _data['next_page'] = nextPage;
+    return _data;
+  }
 }
 
-class Photo {
-  int id;
-  int width;
-  int height;
-  String url;
-  String photographer;
-  String photographerUrl;
-  int photographerId;
-  String avgColor;
-  Src src;
-  bool liked;
-  String alt;
-
-  Photo({
+class Photos {
+  Photos({
     required this.id,
     required this.width,
     required this.height,
@@ -41,22 +45,53 @@ class Photo {
     required this.liked,
     required this.alt,
   });
+  late final int id;
+  late final int width;
+  late final int height;
+  late final String url;
+  late final String photographer;
+  late final String photographerUrl;
+  late final int photographerId;
+  late final String avgColor;
+  late final Src src;
+  late final bool liked;
+  late final String alt;
 
+  Photos.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    width = json['width'];
+    height = json['height'];
+    url = json['url'];
+    photographer = json['photographer'];
+    photographerUrl = json['photographer_url'];
+    photographerId = json['photographer_id'];
+    avgColor = json['avg_color'];
+    src = Src.fromJson(json['src']);
+    liked = json['liked'];
+    alt = json['alt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['width'] = width;
+    _data['height'] = height;
+    _data['url'] = url;
+    _data['photographer'] = photographer;
+    _data['photographer_url'] = photographerUrl;
+    _data['photographer_id'] = photographerId;
+    _data['avg_color'] = avgColor;
+    _data['src'] = src.toJson();
+    _data['liked'] = liked;
+    _data['alt'] = alt;
+    return _data;
+  }
 }
 
 class Src {
-  String original;
-  String large2X;
-  String large;
-  String medium;
-  String small;
-  String portrait;
-  String landscape;
-  String tiny;
-
   Src({
     required this.original,
-    required this.large2X,
+    required this.large2x,
     required this.large,
     required this.medium,
     required this.small,
@@ -64,5 +99,36 @@ class Src {
     required this.landscape,
     required this.tiny,
   });
+  late final String original;
+  late final String large2x;
+  late final String large;
+  late final String medium;
+  late final String small;
+  late final String portrait;
+  late final String landscape;
+  late final String tiny;
 
+  Src.fromJson(Map<String, dynamic> json){
+    original = json['original'];
+    large2x = json['large2x'];
+    large = json['large'];
+    medium = json['medium'];
+    small = json['small'];
+    portrait = json['portrait'];
+    landscape = json['landscape'];
+    tiny = json['tiny'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['original'] = original;
+    _data['large2x'] = large2x;
+    _data['large'] = large;
+    _data['medium'] = medium;
+    _data['small'] = small;
+    _data['portrait'] = portrait;
+    _data['landscape'] = landscape;
+    _data['tiny'] = tiny;
+    return _data;
+  }
 }
