@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallpaper_app/models/wallpapers_model.dart';
 import 'package:wallpaper_app/view_models/wallpaper_view_model.dart';
+import 'package:wallpaper_app/views/widgets/circular_full_custom_loader.dart';
+import 'package:wallpaper_app/views/widgets/drawer_view.dart';
+import 'package:wallpaper_app/views/widgets/wallpaper_custom_view.dart';
 
 class WallpapersView extends StatefulWidget {
   const WallpapersView({super.key});
+
+  static const String route = 'wallpaperView';
 
   @override
   State<WallpapersView> createState() => _WallpapersViewState();
@@ -27,33 +32,33 @@ class _WallpapersViewState extends State<WallpapersView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      drawer: DrawerView(),
       body: Consumer<WallpaperViewModel>(
         builder: (context, child, _) {
+          
 
-          if(child.loading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          return CircularFullCustomLoader(
+            isEnabled: child.loading,
+            child: StreamBuilder<List<Photos>>(
+              stream: child.wallpaper$,
+              builder: (context, sp) {
 
-          return StreamBuilder<List<Photos>>(
-            stream: child.wallpaper$,
-            builder: (context, sp) {
+                if(sp.hasData) {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 4, crossAxisSpacing: 10),
+                    itemCount: sp.data!.length,
+                    itemBuilder: (context, i) {
 
-              if(sp.hasData) {
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                  itemCount: sp.data!.length,
-                  itemBuilder: (context, i) {
+                      Photos res = sp.data![i];
 
-                    Photos res = sp.data![i];
-
-                    return Image.network(res.src.original);
-                  },
-                );
-              }
-              return SizedBox.shrink();
-            },
+                      return WallpaperCustomView(item: res);
+                    },
+                  );
+                }
+                return SizedBox.shrink();
+              },
+            ),
           );
         }
       ),

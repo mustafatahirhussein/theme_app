@@ -1,0 +1,3 @@
+class AdUtils {
+  AdUtils._();
+}

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wallpaper_app/data/app_exceptions.dart';
 import 'package:wallpaper_app/data/network/base_api_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper_app/utils/app_utils.dart';
 
 String baseUrl = "${dotenv.get('API_URL')}${dotenv.get('CURATED')}";
 
@@ -13,7 +14,7 @@ class NetworkApiService extends BaseApiService {
   dynamic getApiResponse() async {
     dynamic jsonResponse;
 
-    http.Response res = await http.get(Uri.parse(baseUrl), headers: {
+    http.Response res = await http.get(Uri.parse('$baseUrl?per_page=${AppUtils.perPageCount}'), headers: {
       "Authorization": dotenv.get('ACCESS_TOKEN')
     });
     jsonResponse = await jsonOutput(res);
